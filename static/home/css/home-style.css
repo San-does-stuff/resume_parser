@@ -1,0 +1,319 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #f5f3ee;
+  color: #1a1814;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── NAV ── */
+nav {
+  background: #1a1814;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-family: 'DM Serif Display', serif;
+  color: #faf9f6;
+  font-size: 1.25rem;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.nav-links a {
+  color: #aaa;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.4rem 0.9rem;
+  border-radius: 4px;
+}
+
+.nav-links a:hover {
+  color: #faf9f6;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-links .btn-login {
+  color: #faf9f6;
+  background: #2d5a3d;
+  margin-left: 0.5rem;
+}
+
+.nav-links .btn-login:hover {
+  background: #4a8f62;
+}
+
+/* ── MAIN LAYOUT ── */
+main {
+  flex: 1;
+  padding: 2.5rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  max-width: 1300px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── SHARED PANEL STYLES ── */
+.pdf-panel,
+.extracted-panel,
+.upload-panel {
+  background: #faf9f6;
+  border: 1px solid #ccc8be;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.panel-label {
+  background: #e8e4db;
+  border-bottom: 1px solid #ccc8be;
+  padding: 0.65rem 1.2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6b6760;
+}
+
+/* ── LEFT: PDF PANEL ── */
+.pdf-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.pdf-frame-wrap {
+  flex: 1;
+  min-height: 600px;
+}
+
+.pdf-frame-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  min-height: 600px;
+}
+
+/* ── RIGHT COLUMN ── */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── EXTRACTED DATA ── */
+.extracted-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.field-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6b6760;
+}
+
+.field-value {
+  font-size: 0.95rem;
+  color: #1a1814;
+  background: #e8e4db;
+  border: 1px solid #ccc8be;
+  border-radius: 5px;
+  padding: 0.5rem 0.8rem;
+}
+
+.skills-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.5rem 0.8rem;
+  background: #e8e4db;
+  border: 1px solid #ccc8be;
+  border-radius: 5px;
+  min-height: 2.5rem;
+}
+
+.chip {
+  background: #2d5a3d;
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+/* ── PREDICTED JOB TITLE ── */
+.job-title-panel {
+  background: #1a1814;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.jt-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 0.3rem;
+}
+
+.jt-value {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.4rem;
+  color: #faf9f6;
+}
+
+.confidence-badge {
+  background: #2d5a3d;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  border-radius: 20px;
+}
+
+/* ── UPLOAD PANEL ── */
+.drop-zone {
+  margin: 1.25rem;
+  border: 2px dashed #ccc8be;
+  border-radius: 8px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  background: #e8e4db;
+  position: relative;
+}
+
+.drop-zone:hover,
+.drop-zone.dragover {
+  border-color: #2d5a3d;
+  background: #dff0e7;
+}
+
+.drop-zone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.drop-main {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a1814;
+  margin-bottom: 0.25rem;
+}
+
+.drop-sub {
+  font-size: 0.8rem;
+  color: #6b6760;
+}
+
+.drop-hint {
+  font-size: 0.72rem;
+  color: #6b6760;
+  margin-top: 0.4rem;
+}
+
+.browse-link {
+  color: #2d5a3d;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.upload-footer {
+  padding: 0 1.25rem 1.25rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}
+
+.file-name-display {
+  font-size: 0.8rem;
+  color: #6b6760;
+  font-style: italic;
+}
+
+.btn-submit {
+  background: #1a1814;
+  color: #faf9f6;
+  border: none;
+  padding: 0.65rem 1.75rem;
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background: #2d5a3d;
+}
+
+.btn-submit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: #e8e4db;
+  border-top: 1px solid #ccc8be;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.8rem;
+  color: #6b6760;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  main {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+
+  .pdf-frame-wrap,
+  .pdf-frame-wrap iframe {
+    min-height: 400px;
+  }
+}

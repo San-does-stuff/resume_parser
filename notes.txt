@@ -1,0 +1,48 @@
+*********** WORKING PROCESS *****************
+Phase 1:
+
+- Create and Activate python environment
+python3 -m venv env
+linux : source env/bin/activate
+
+- Install Django
+pip3 install django , python-dotenv
+
+- Create project and apps
+cd resume_parser
+django-server startproject resume_parser .
+
+python3 manage.py startapp core
+
+- Add core in settings.py
+
+- Create templates folder and add a dummy html file 
+- Go to core/ and create a file urls.py :
+
+    path('' , include('core.urls'))
+
+- In core/urls.py :
+    urlpatterns = [
+        path('',views.index,name = 'index')
+    ]
+
+- In views.py :
+    def index(requests):
+        return render(requests,'index.html')
+
+- Adding static in django: (https://docs.djangoproject.com/en/2.2/howto/static-files/)
+Goto settings.py:
+    STATIC_URL = '/static/'
+
+    if multiple directories
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIRS,"static"),
+        
+    ]
+
+Working:
+User request(Browser) ----> Project's urls.py ------> app's urls.py ------> views.py (points to templates/index.html) -----> return templates ---> Browser
+
+Phase 2: Database Connectivity
+
+
