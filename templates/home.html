@@ -80,7 +80,7 @@
     <div class="upload-panel">
       <div class="panel-label">Upload Your Resume</div>
       <div class="drop-zone" id="dropZone">
-        <input type="file" id="fileInput" accept=".pdf" />
+        <input type="file" id="fileInput" accept=".pdf" name="resume"/>
         <p class="drop-main">Drag &amp; Drop your Resume PDF</p>
         <p class="drop-sub">or <span class="browse-link">browse to upload</span></p>
         <p class="drop-hint">PDF files only · Max 10 MB</p>
@@ -97,6 +97,8 @@
 <footer>
   © 2025 ResumeAI · Built to match talent with opportunity
 </footer>
+
+<input type="hidden" id="csrfToken" value="{% csrf_token %}">
 
 <script src="{% static 'home/script/home-script.js'%}"></script>
 </body>

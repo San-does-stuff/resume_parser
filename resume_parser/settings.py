@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'resume',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -72,11 +74,19 @@ WSGI_APPLICATION = 'resume_parser.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME'),
+        'USERNAME' : os.getenv('DB_USERNAME'),
+        'PASSWORD' : os.getenv('DB_PASSWORD'),
+        'HOST' : 'localhost',
+        'PORT' : os.getenv('DB_PORT'),
     }
 }
 
@@ -114,9 +124,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
-import os
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,"static")
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+AUTH_USER_MODEL = 'users.Users'
+

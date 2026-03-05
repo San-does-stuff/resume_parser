@@ -40,9 +40,31 @@ Goto settings.py:
         
     ]
 
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 Working:
 User request(Browser) ----> Project's urls.py ------> app's urls.py ------> views.py (points to templates/index.html) -----> return templates ---> Browser
 
+User submits cv ---> :formdata -> Fetch API -> method POST -> Server -> View -> Store cv
+
 Phase 2: Database Connectivity
+- pip install psycopg2-binary
+- Create Database
+
+In settings , replace database connectivity with:
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'resume_parser_db',
+        'USER': 'your_postgres_username',
+        'PASSWORD': 'your_postgres_password',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+
+Creating apps (users and resume) for their model
+
 
 
