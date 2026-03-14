@@ -1,23 +1,26 @@
 from django.http import JsonResponse
-from django.core.files.storage import FileSystemStorage
-# from django.views.decorators.csrf import csrf_exempt
+from .models import Resume
 
-# @csrf_exempt
 def upload_resume(request):
-    if request.method == 'POST':    
+    if request.method == 'POST':
         file = request.FILES.get('resume')
 
         if not file:
             return JsonResponse({'error': 'No file uploaded'}, status=400)
 
-        fs = FileSystemStorage()          
-        filename = fs.save(file.name, file)
-        file_url = fs.url(filename)
+        resume = Resume.objects.create(
+            user=request.user if request.user.is_authenticated else None,
+            filePath=file,
+            fileType=file.name.split('.')[-1],
+        )
+
+        # store resume id in session for guest users
+        request.session['resume_id'] = resume.id
 
         return JsonResponse({
             'message': 'File uploaded successfully',
-            'filename': filename,
-            'url': file_url
+            'resume_id': resume.id,
+            'url': resume.filePath.url
         })
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
