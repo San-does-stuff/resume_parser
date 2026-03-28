@@ -83,11 +83,11 @@ load_dotenv()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USERNAME' : os.getenv('DB_USERNAME'),
-        'PASSWORD' : os.getenv('DB_PASSWORD'),
-        'HOST' : 'localhost',
-        'PORT' : os.getenv('DB_PORT'),
+        'NAME': 'myauthdb',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres123',  # ← password from install
+        'HOST': 'localhost',
+        'PORT': '5432',                    # ← same port for all versions
     }
 }
 
@@ -134,5 +134,5 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-AUTH_USER_MODEL = 'users.Users'
+#AUTH_USER_MODEL = 'users.Users'
 

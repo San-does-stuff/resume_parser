@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard - TalentMatch</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    min-height: 100vh;
+  }
+
+  /* NAVBAR */
+  .navbar {
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 0 24px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand { font-size: 18px; font-weight: bold; color: #333; }
+  .brand span { color: #4a7fd4; }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: #555;
+  }
+
+  .badge {
+    background: #4a7fd4;
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+  }
+
+  .logout-btn {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 14px;
+    font-size: 13px;
+    color: #555;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+  }
+  .logout-btn:hover { background: #f0f0f0; }
+
+  /* MAIN */
+  .main { padding: 28px; max-width: 960px; margin: 0 auto; }
+
+  .page-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  /* STAT CARDS */
+  .stats {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 18px 24px;
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .stat .num {
+    font-size: 26px;
+    font-weight: bold;
+    color: #4a7fd4;
+  }
+
+  .stat .lbl {
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
+  }
+
+  /* TABLE CARD */
+  .table-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .table-top {
+    padding: 14px 18px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .table-top h3 { font-size: 15px; color: #333; }
+
+  .search {
+    padding: 7px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 13px;
+    outline: none;
+    font-family: Arial, sans-serif;
+    width: 200px;
+  }
+  .search:focus { border-color: #4a7fd4; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+  thead tr { background: #f9fafb; }
+
+  th {
+    text-align: left;
+    padding: 10px 16px;
+    color: #888;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border-bottom: 1px solid #eee;
+  }
+
+  td {
+    padding: 12px 16px;
+    color: #444;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: #fafbfc; }
+
+  .empty {
+    text-align: center;
+    padding: 40px;
+    color: #aaa;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="brand">Talent<span>Match</span></div>
+  <div class="nav-right">
+    <span class="badge">Admin</span>
+    <button class="logout-btn" onclick="window.location.href='/logout/'">Logout</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="page-title">Admin Dashboard</div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="num" id="totalUsers">—</div>
+      <div class="lbl">Total Users</div>
+    </div>
+    <div class="stat">
+      <div class="num" id="totalMatches">—</div>
+      <div class="lbl">Total Matches</div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-top">
+      <h3>Registered Users</h3>
+      <input class="search" type="text" placeholder="Search name or email..." oninput="filterTable(this.value)">
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Joined</th>
+          <th>Job Matches</th>
+        </tr>
+      </thead>
+      <tbody id="usersBody">
+        <tr><td colspan="5" class="empty">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  var allUsers = [];
+
+  function filterTable(q) {
+    q = q.toLowerCase();
+    var filtered = allUsers.filter(function(u) {
+      return u.full_name.toLowerCase().indexOf(q) > -1 ||
+             u.email.toLowerCase().indexOf(q) > -1;
+    });
+    renderTable(filtered);
+  }
+
+  function renderTable(users) {
+    var tbody = document.getElementById('usersBody');
+    if (!users.length) {
+      tbody.innerHTML = '<tr><td colspan="5" class="empty">No users found.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = users.map(function(u, i) {
+      return '<tr>' +
+        '<td>' + (i + 1) + '</td>' +
+        '<td>' + u.full_name + '</td>' +
+        '<td>' + u.email + '</td>' +
+        '<td>' + u.joined + '</td>' +
+        '<td>' + u.match_count + '</td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  fetch('/api/admin/users/')
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      allUsers = d.users || [];
+      document.getElementById('totalUsers').textContent = allUsers.length;
+      var totalMatches = allUsers.reduce(function(sum, u) { return sum + u.match_count; }, 0);
+      document.getElementById('totalMatches').textContent = totalMatches;
+      renderTable(allUsers);
+    })
+    .catch(function() {
+      // Demo data when backend not connected
+      allUsers = [
+        { full_name: 'Alice Johnson', email: 'alice@email.com', joined: '2025-01-10', match_count: 5 },
+        { full_name: 'Bob Smith',     email: 'bob@email.com',   joined: '2025-01-14', match_count: 3 },
+        { full_name: 'Carol White',   email: 'carol@email.com', joined: '2025-01-18', match_count: 2 },
+        { full_name: 'David Lee',     email: 'david@email.com', joined: '2025-01-20', match_count: 4 },
+      ];
+      document.getElementById('totalUsers').textContent = allUsers.length;
+      document.getElementById('totalMatches').textContent = 14;
+      renderTable(allUsers);
+    });
+</script>
+</body>
+</html>

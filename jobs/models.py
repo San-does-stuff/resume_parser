@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import Users
+from users.models import UserProfile  # ← new
 
 class JobCategory(models.Model):
     categoryName = models.CharField(max_length=100, unique=True)
@@ -22,7 +22,7 @@ class Job(models.Model):
     
 class Recommendation(models.Model):
     users = models.ForeignKey(
-        Users,
+        UserProfile,
         on_delete= models.SET_NULL,
         null=True
     )

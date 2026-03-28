@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Dashboard - TalentMatch</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    min-height: 100vh;
+  }
+
+  /* NAVBAR */
+  .navbar {
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 0 24px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand { font-size: 18px; font-weight: bold; color: #333; }
+  .brand span { color: #4a7fd4; }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: #555;
+  }
+
+  .logout-btn {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px 14px;
+    font-size: 13px;
+    color: #555;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+  }
+  .logout-btn:hover { background: #f0f0f0; }
+
+  /* MAIN */
+  .main { padding: 28px; max-width: 800px; margin: 0 auto; }
+
+  .page-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 6px;
+  }
+
+  .page-sub {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 24px;
+  }
+
+  /* JOB CARDS */
+  .job-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .job-left h4 {
+    font-size: 15px;
+    color: #222;
+    margin-bottom: 4px;
+  }
+
+  .job-left .company {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 8px;
+  }
+
+  .skills { display: flex; flex-wrap: wrap; gap: 4px; }
+
+  .skill-tag {
+    background: #eef3fb;
+    color: #4a7fd4;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+  }
+
+  .job-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  /* Score circle */
+  .score {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    border: 3px solid #4a7fd4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: bold;
+    color: #4a7fd4;
+  }
+
+  .score.high { border-color: #27ae60; color: #27ae60; }
+  .score.mid  { border-color: #e67e22; color: #e67e22; }
+  .score.low  { border-color: #ccc;    color: #aaa; }
+
+  .apply-btn {
+    padding: 6px 16px;
+    background: #4a7fd4;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+  }
+  .apply-btn:hover { background: #3a6bbf; }
+
+  /* No matches state */
+  .no-matches {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 48px;
+    text-align: center;
+    color: #aaa;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .no-matches strong { display: block; font-size: 16px; color: #888; margin-bottom: 6px; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #27ae60;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-size: 13px;
+    transition: transform 0.3s ease;
+    z-index: 99;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="brand">Talent<span>Match</span></div>
+  <div class="nav-right">
+    <span id="userName">User</span>
+    <button class="logout-btn" onclick="window.location.href='/logout/'">Logout</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="page-title">Your Job Matches</div>
+  <div class="page-sub">Jobs matched based on the skills extracted from your CV.</div>
+
+  <div id="matchesList">
+    <div class="no-matches"><strong>Loading...</strong></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // Show username from session (passed via Django template context if needed)
+  // For now read from a meta tag or just show generic greeting
+
+  var toastTimer;
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2800);
+  }
+
+  function renderMatches(matches) {
+    var container = document.getElementById('matchesList');
+
+    if (!matches.length) {
+      container.innerHTML =
+        '<div class="no-matches">' +
+          '<strong>No matches yet</strong>' +
+          'Upload your CV so our system can extract your skills<br>and match you with the right job vacancies.' +
+        '</div>';
+      return;
+    }
+
+    container.innerHTML = matches.map(function(m) {
+      var pct = Math.round(m.score * 100);
+      var cls = pct >= 80 ? 'high' : pct >= 60 ? 'mid' : 'low';
+
+      var skillTags = (m.skills || []).map(function(s) {
+        return '<span class="skill-tag">' + s + '</span>';
+      }).join('');
+
+      return '<div class="job-card">' +
+        '<div class="job-left">' +
+          '<h4>' + m.job_title + '</h4>' +
+          '<div class="company">' + m.company + (m.location ? ' &bull; ' + m.location : '') + '</div>' +
+          '<div class="skills">' + (skillTags || '') + '</div>' +
+        '</div>' +
+        '<div class="job-right">' +
+          '<div class="score ' + cls + '">' + pct + '%</div>' +
+          '<button class="apply-btn" onclick="showToast(\'Applied to ' + m.job_title + '!\')">Apply</button>' +
+        '</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  fetch('/api/user/matches/')
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      renderMatches(d.matches || []);
+    })
+    .catch(function() {
+      // Demo data when backend not connected
+      renderMatches([
+        { job_title: 'Python Developer',  company: 'TechCorp',     location: 'Kathmandu', score: 0.92, skills: ['Python', 'Django', 'REST API'] },
+        { job_title: 'Data Analyst',      company: 'DataWorks',    location: 'Remote',    score: 0.80, skills: ['SQL', 'Python', 'Excel'] },
+        { job_title: 'Backend Engineer',  company: 'Innovate Ltd', location: 'Lalitpur',  score: 0.65, skills: ['Django', 'PostgreSQL'] },
+        { job_title: 'ML Engineer',       company: 'AI Solutions', location: 'Remote',    score: 0.50, skills: ['Python', 'Machine Learning'] },
+      ]);
+    });
+</script>
+</body>
+</html>
