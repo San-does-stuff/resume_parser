@@ -11,144 +11,399 @@
     font-family: Arial, sans-serif;
     background: #f4f6f8;
     min-height: 100vh;
+    color: #333;
   }
 
-  /* NAVBAR */
   .navbar {
     background: #fff;
-    border-bottom: 1px solid #ddd;
-    padding: 0 24px;
-    height: 54px;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0 28px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
   }
 
-  .brand { font-size: 18px; font-weight: bold; color: #333; }
+  .brand { font-size: 20px; font-weight: bold; color: #222; }
   .brand span { color: #4a7fd4; }
 
   .nav-right {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 13px;
+    gap: 14px;
+    font-size: 14px;
     color: #555;
   }
+
+  .nav-user { font-weight: bold; color: #333; }
 
   .logout-btn {
-    background: none;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 5px 14px;
-    font-size: 13px;
-    color: #555;
-    cursor: pointer;
-    font-family: Arial, sans-serif;
-  }
-  .logout-btn:hover { background: #f0f0f0; }
-
-  /* MAIN */
-  .main { padding: 28px; max-width: 800px; margin: 0 auto; }
-
-  .page-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 6px;
-  }
-
-  .page-sub {
-    font-size: 13px;
-    color: #888;
-    margin-bottom: 24px;
-  }
-
-  /* JOB CARDS */
-  .job-card {
     background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 18px 20px;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-  }
-
-  .job-left h4 {
-    font-size: 15px;
-    color: #222;
-    margin-bottom: 4px;
-  }
-
-  .job-left .company {
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 7px 15px;
     font-size: 13px;
-    color: #666;
-    margin-bottom: 8px;
+    color: #444;
+    cursor: pointer;
+  }
+  .logout-btn:hover { background: #f3f4f6; }
+
+  .main {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 20px;
   }
 
-  .skills { display: flex; flex-wrap: wrap; gap: 4px; }
-
-  .skill-tag {
-    background: #eef3fb;
-    color: #4a7fd4;
-    padding: 3px 10px;
-    border-radius: 10px;
-    font-size: 12px;
+  .welcome-box {
+    background: linear-gradient(135deg, #4a7fd4, #6ea0f2);
+    color: #fff;
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 24px rgba(74,127,212,0.18);
   }
 
-  .job-right {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
+  .welcome-box h1 { font-size: 26px; margin-bottom: 8px; }
+  .welcome-box p  { font-size: 14px; opacity: 0.95; line-height: 1.7; }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 22px;
   }
 
-  /* Score circle */
-  .score {
-    width: 54px;
-    height: 54px;
+  /* PROFILE CARD */
+  .profile-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    height: fit-content;
+  }
+
+  .avatar {
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    border: 3px solid #4a7fd4;
+    background: #4a7fd4;
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
+    font-size: 28px;
     font-weight: bold;
-    color: #4a7fd4;
+    margin-bottom: 18px;
   }
 
-  .score.high { border-color: #27ae60; color: #27ae60; }
-  .score.mid  { border-color: #e67e22; color: #e67e22; }
-  .score.low  { border-color: #ccc;    color: #aaa; }
+  .profile-card h3 { font-size: 18px; margin-bottom: 6px; color: #222; }
+  .profile-card > p { font-size: 13px; color: #777; margin-bottom: 18px; }
 
-  .apply-btn {
-    padding: 6px 16px;
+  .info-row { margin-bottom: 14px; }
+  .info-label { font-size: 12px; color: #999; margin-bottom: 4px; }
+  .info-value { font-size: 14px; color: #333; font-weight: 500; }
+
+  /* CV STATUS in profile */
+  .cv-status-row {
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .cv-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .cv-dot.uploaded { background: #27ae60; }
+  .cv-dot.missing  { background: #e05252; }
+
+  .cv-status-text { font-size: 13px; font-weight: 500; }
+  .cv-status-text.uploaded { color: #27ae60; }
+  .cv-status-text.missing  { color: #e05252; }
+
+  /* Upload button inside profile card */
+  .upload-link-btn {
+    display: block;
+    width: 100%;
+    margin-top: 16px;
+    padding: 9px;
     background: #4a7fd4;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+  .upload-link-btn:hover { background: #3a6bbf; }
+
+  .reupload-link-btn {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+    background: none;
+    color: #4a7fd4;
+    border: 1px solid #4a7fd4;
+    border-radius: 7px;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+  .reupload-link-btn:hover { background: #eef4ff; }
+
+  /* ── CV UPLOAD SECTION ── */
+  .cv-section {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+  }
+
+  .cv-section-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  /* Drop zone */
+  .drop-zone {
+    border: 2px dashed #c8d8f0;
+    border-radius: 10px;
+    padding: 36px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    background: #f8fbff;
+    position: relative;
+  }
+
+  .drop-zone:hover, .drop-zone.dragover {
+    border-color: #4a7fd4;
+    background: #eef4ff;
+  }
+
+  .drop-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  .drop-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+  }
+
+  .drop-main {
+    font-size: 15px;
+    color: #444;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  .drop-sub {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 8px;
+  }
+
+  .drop-hint {
+    font-size: 12px;
+    color: #aaa;
+  }
+
+  /* File selected state */
+  .file-selected-bar {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    background: #eef4ff;
+    border: 1px solid #c8d8f0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 12px;
+    font-size: 13px;
+  }
+
+  .file-selected-bar.show { display: flex; }
+
+  .file-name-text { color: #333; font-weight: 500; }
+
+  .clear-file-btn {
+    background: none;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0 4px;
+    font-family: Arial, sans-serif;
+    line-height: 1;
+  }
+  .clear-file-btn:hover { color: #e05252; }
+
+  .upload-submit-btn {
+    width: 100%;
+    margin-top: 14px;
+    padding: 11px;
+    background: #4a7fd4;
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    display: none;
+  }
+  .upload-submit-btn.show { display: block; }
+  .upload-submit-btn:hover { background: #3a6bbf; }
+  .upload-submit-btn:disabled { background: #a0b9e8; cursor: not-allowed; }
+
+  /* Progress bar */
+  .progress-wrap {
+    display: none;
+    margin-top: 12px;
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-wrap.show { display: block; }
+  .progress-bar {
+    height: 100%;
+    background: #4a7fd4;
+    border-radius: 4px;
+    width: 0;
+    transition: width 0.3s ease;
+  }
+
+  /* Already uploaded banner */
+  .cv-uploaded-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #e8f8f0;
+    border: 1px solid #a8dfc4;
+    border-radius: 10px;
+    padding: 14px 18px;
+  }
+
+  .cv-uploaded-banner .banner-icon { font-size: 28px; }
+
+  .banner-info { flex: 1; }
+  .banner-info strong { display: block; font-size: 14px; color: #1e7a4a; margin-bottom: 2px; }
+  .banner-info span   { font-size: 12px; color: #3aa06a; }
+
+  .replace-btn {
+    padding: 7px 16px;
+    background: none;
+    border: 1px solid #27ae60;
+    border-radius: 6px;
+    color: #27ae60;
     font-size: 12px;
     cursor: pointer;
     font-family: Arial, sans-serif;
+    white-space: nowrap;
   }
-  .apply-btn:hover { background: #3a6bbf; }
+  .replace-btn:hover { background: #d4f5e4; }
 
-  /* No matches state */
-  .no-matches {
+  /* JOB SECTION */
+  .section-title { font-size: 20px; font-weight: bold; color: #333; margin-bottom: 6px; }
+  .section-sub   { font-size: 13px; color: #888; margin-bottom: 18px; }
+
+  .job-card {
     background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 48px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+    transition: 0.2s ease;
+  }
+
+  .job-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  }
+
+  .job-card h4 { font-size: 17px; color: #222; margin-bottom: 5px; }
+
+  .job-meta {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .skills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+  .skill-tag {
+    background: #eef4ff;
+    color: #4a7fd4;
+    padding: 4px 10px;
+    border-radius: 14px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  .status-badge.Pending  { background: #fff8e1; color: #f39c12; }
+  .status-badge.Accepted { background: #e8f8f0; color: #27ae60; }
+  .status-badge.Rejected { background: #fdecea; color: #e05252; }
+
+  .posted-date { font-size: 12px; color: #aaa; margin-top: 8px; }
+
+  /* No CV yet nudge */
+  .no-cv-nudge {
+    background: #fff8e1;
+    border: 1px solid #fce08a;
+    border-radius: 12px;
+    padding: 28px;
     text-align: center;
-    color: #aaa;
+    color: #888;
     font-size: 14px;
     line-height: 1.8;
   }
 
-  .no-matches strong { display: block; font-size: 16px; color: #888; margin-bottom: 6px; }
+  .no-cv-nudge strong { display: block; font-size: 16px; color: #b7860a; margin-bottom: 6px; }
+
+  .no-matches {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 52px 30px;
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+    line-height: 1.8;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+  }
+
+  .no-matches strong { display: block; font-size: 18px; color: #666; margin-bottom: 8px; }
 
   /* Toast */
   .toast {
@@ -156,15 +411,22 @@
     bottom: 24px;
     left: 50%;
     transform: translateX(-50%) translateY(80px);
-    background: #27ae60;
     color: #fff;
-    padding: 10px 22px;
-    border-radius: 6px;
+    padding: 11px 22px;
+    border-radius: 8px;
     font-size: 13px;
     transition: transform 0.3s ease;
     z-index: 99;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
   }
-  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.show    { transform: translateX(-50%) translateY(0); }
+  .toast.success { background: #27ae60; }
+  .toast.error   { background: #e05252; }
+  .toast.info    { background: #4a7fd4; }
+
+  @media (max-width: 900px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -172,83 +434,363 @@
 <div class="navbar">
   <div class="brand">Talent<span>Match</span></div>
   <div class="nav-right">
-    <span id="userName">User</span>
+    <span class="nav-user">{{ user.full_name }}</span>
     <button class="logout-btn" onclick="window.location.href='/logout/'">Logout</button>
   </div>
 </div>
 
 <div class="main">
-  <div class="page-title">Your Job Matches</div>
-  <div class="page-sub">Jobs matched based on the skills extracted from your CV.</div>
 
-  <div id="matchesList">
-    <div class="no-matches"><strong>Loading...</strong></div>
+  <div class="welcome-box">
+    <h1>Welcome, {{ user.full_name }}</h1>
+    <p>Upload your CV so our NLP engine can extract your skills and match you with the best job vacancies.</p>
+  </div>
+
+  <div class="dashboard-grid">
+
+    <!-- LEFT: PROFILE CARD -->
+    <div class="profile-card">
+      <div class="avatar">{{ user.full_name|slice:":1"|upper }}</div>
+      <h3>{{ user.full_name }}</h3>
+      <p>Candidate Profile</p>
+
+      <div class="info-row">
+        <div class="info-label">Full Name</div>
+        <div class="info-value">{{ user.full_name }}</div>
+      </div>
+
+      <div class="info-row">
+        <div class="info-label">Email Address</div>
+        <div class="info-value">{{ user.email }}</div>
+      </div>
+
+      <div class="info-row">
+        <div class="info-label">Account Type</div>
+        <div class="info-value">Job Seeker</div>
+      </div>
+
+      <div class="info-row">
+        <div class="info-label">Member Since</div>
+        <div class="info-value">{{ user.created_at|date:"F d, Y" }}</div>
+      </div>
+
+      <div class="info-row">
+        <div class="info-label">CV Status</div>
+        <div class="cv-status-row" id="cvStatusRow">
+          <!-- filled by JS -->
+        </div>
+      </div>
+
+      <div class="info-row">
+        <div class="info-label">Total Matches</div>
+        <div class="info-value" id="matchCount">—</div>
+      </div>
+
+      <!-- shown only if no CV uploaded -->
+      <button class="upload-link-btn" id="profileUploadBtn"
+              onclick="scrollToUpload()" style="display:none">
+        Upload CV Now
+      </button>
+
+      <!-- shown only if CV already uploaded -->
+      <button class="reupload-link-btn" id="profileReuploadBtn"
+              onclick="showReplaceZone()" style="display:none">
+        Replace CV
+      </button>
+    </div>
+
+    <!-- RIGHT: CV UPLOAD + JOB MATCHES -->
+    <div>
+
+      <!-- CV UPLOAD SECTION -->
+      <div class="cv-section" id="cvSection">
+        <div class="cv-section-title">Your CV / Resume</div>
+
+        <!-- State A: No CV uploaded yet -->
+        <div id="uploadArea">
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="cvFileInput" accept=".pdf,.doc,.docx"
+                   onchange="onFileSelected(this)">
+            <div class="drop-icon">📄</div>
+            <div class="drop-main">Drag &amp; Drop your CV here</div>
+            <div class="drop-sub">or click to browse</div>
+            <div class="drop-hint">PDF, DOC or DOCX &nbsp;·&nbsp; Max 10 MB</div>
+          </div>
+
+          <div class="file-selected-bar" id="fileBar">
+            <span class="file-name-text" id="fileNameText"></span>
+            <button class="clear-file-btn" onclick="clearFile()" type="button">&#x2715;</button>
+          </div>
+
+          <div class="progress-wrap" id="progressWrap">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+
+          <button class="upload-submit-btn" id="uploadSubmitBtn"
+                  onclick="submitCV()">
+            Upload &amp; Parse CV
+          </button>
+        </div>
+
+        <!-- State B: CV already uploaded (hidden until confirmed) -->
+        <div id="uploadedBanner" style="display:none">
+          <div class="cv-uploaded-banner">
+            <div class="banner-icon">✅</div>
+            <div class="banner-info">
+              <strong>CV Uploaded Successfully</strong>
+              <span id="uploadedFileName">Your CV has been parsed and skills extracted.</span>
+            </div>
+            <button class="replace-btn" onclick="showReplaceZone()">Replace</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- JOB MATCHES -->
+      <div class="section-title">Your Job Matches</div>
+      <div class="section-sub">Jobs recommended based on your extracted CV skills.</div>
+      <div id="matchesList">
+        <div class="no-matches"><strong>Loading...</strong></div>
+      </div>
+
+    </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  // Show username from session (passed via Django template context if needed)
-  // For now read from a meta tag or just show generic greeting
+  var selectedFile  = null;
+  var cvUploaded    = false;   // will be set from server response
+  var toastTimer    = null;
 
-  var toastTimer;
-  function showToast(msg) {
+  // ── Helpers ──────────────────────────────────────────
+  function showToast(msg, type) {
     var t = document.getElementById('toast');
     t.textContent = msg;
-    t.classList.add('show');
+    t.className = 'toast ' + (type || 'success') + ' show';
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2800);
+    toastTimer = setTimeout(function() { t.classList.remove('show'); }, 3000);
+  }
+
+  function getCookie(name) {
+    var val = '; ' + document.cookie;
+    var parts = val.split('; ' + name + '=');
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return '';
+  }
+
+  function scrollToUpload() {
+    document.getElementById('cvSection').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ── CV Status display ─────────────────────────────────
+  function setCVStatus(uploaded) {
+    cvUploaded = uploaded;
+    var row = document.getElementById('cvStatusRow');
+    if (uploaded) {
+      row.innerHTML =
+        '<div class="cv-dot uploaded"></div>' +
+        '<span class="cv-status-text uploaded">CV Uploaded</span>';
+      document.getElementById('profileUploadBtn').style.display  = 'none';
+      document.getElementById('profileReuploadBtn').style.display = 'block';
+      showUploadedBanner();
+    } else {
+      row.innerHTML =
+        '<div class="cv-dot missing"></div>' +
+        '<span class="cv-status-text missing">No CV uploaded</span>';
+      document.getElementById('profileUploadBtn').style.display  = 'block';
+      document.getElementById('profileReuploadBtn').style.display = 'none';
+      showUploadArea();
+    }
+  }
+
+  function showUploadArea() {
+    document.getElementById('uploadArea').style.display    = 'block';
+    document.getElementById('uploadedBanner').style.display = 'none';
+  }
+
+  function showUploadedBanner(filename) {
+    document.getElementById('uploadArea').style.display    = 'none';
+    document.getElementById('uploadedBanner').style.display = 'block';
+    if (filename) {
+      document.getElementById('uploadedFileName').textContent =
+        filename + ' — parsed and skills extracted.';
+    }
+  }
+
+  function showReplaceZone() {
+    showUploadArea();
+    clearFile();
+    scrollToUpload();
+  }
+
+  // ── File selection ────────────────────────────────────
+  function onFileSelected(input) {
+    if (!input.files || !input.files.length) return;
+    var file = input.files[0];
+
+    // 10 MB limit
+    if (file.size > 10 * 1024 * 1024) {
+      showToast('File too large. Max size is 10 MB.', 'error');
+      input.value = '';
+      return;
+    }
+
+    selectedFile = file;
+    document.getElementById('fileNameText').textContent = file.name;
+    document.getElementById('fileBar').classList.add('show');
+    document.getElementById('uploadSubmitBtn').classList.add('show');
+  }
+
+  function clearFile() {
+    selectedFile = null;
+    document.getElementById('cvFileInput').value = '';
+    document.getElementById('fileBar').classList.remove('show');
+    document.getElementById('uploadSubmitBtn').classList.remove('show');
+    document.getElementById('progressWrap').classList.remove('show');
+    document.getElementById('progressBar').style.width = '0';
+  }
+
+  // ── Drag and drop ─────────────────────────────────────
+  var dropZone = document.getElementById('dropZone');
+
+  dropZone.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    dropZone.classList.add('dragover');
+  });
+
+  dropZone.addEventListener('dragleave', function() {
+    dropZone.classList.remove('dragover');
+  });
+
+  dropZone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    var files = e.dataTransfer.files;
+    if (files.length) {
+      // manually trigger selection
+      var fakeInput = { files: files };
+      onFileSelected(fakeInput);
+    }
+  });
+
+  // ── Upload CV to server ───────────────────────────────
+  function submitCV() {
+    if (!selectedFile) return;
+
+    var btn = document.getElementById('uploadSubmitBtn');
+    btn.disabled    = true;
+    btn.textContent = 'Uploading...';
+
+    // Show progress bar animation
+    var pw = document.getElementById('progressWrap');
+    var pb = document.getElementById('progressBar');
+    pw.classList.add('show');
+    pb.style.width = '0';
+    setTimeout(function() { pb.style.width = '60%'; }, 100);
+
+    var formData = new FormData();
+    formData.append('cv', selectedFile);
+
+    fetch('/api/user/upload-cv/', {
+      method: 'POST',
+      headers: { 'X-CSRFToken': getCookie('csrftoken') },
+      body: formData
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      pb.style.width = '100%';
+      setTimeout(function() {
+        if (data.success) {
+          showToast('CV uploaded and parsed successfully!', 'success');
+          setCVStatus(true);
+          showUploadedBanner(selectedFile.name);
+          loadMatches();   // refresh matches after new CV
+        } else {
+          showToast(data.message || 'Upload failed. Try again.', 'error');
+          pw.classList.remove('show');
+        }
+        btn.disabled    = false;
+        btn.textContent = 'Upload & Parse CV';
+      }, 400);
+    })
+    .catch(function() {
+      // Demo mode — no backend connected
+      pb.style.width = '100%';
+      setTimeout(function() {
+        showToast('CV uploaded! (demo mode)', 'success');
+        setCVStatus(true);
+        showUploadedBanner(selectedFile.name);
+        btn.disabled    = false;
+        btn.textContent = 'Upload & Parse CV';
+      }, 500);
+    });
+  }
+
+  // ── Check if user already has a CV ───────────────────
+  function checkCVStatus() {
+    fetch('/api/user/cv-status/')
+      .then(function(r) { return r.json(); })
+      .then(function(d) { setCVStatus(d.cv_uploaded === true); })
+      .catch(function()  { setCVStatus(false); });  // default: show upload
+  }
+
+  // ── Load job matches ──────────────────────────────────
+  function loadMatches() {
+    fetch('/api/user/matches/')
+      .then(function(r) { return r.json(); })
+      .then(function(d) { renderMatches(d.matches || []); })
+      .catch(function()  { renderMatches([]); });
   }
 
   function renderMatches(matches) {
     var container = document.getElementById('matchesList');
+    document.getElementById('matchCount').textContent = matches.length;
+
+    if (!cvUploaded && !matches.length) {
+      container.innerHTML =
+        '<div class="no-cv-nudge">' +
+          '<strong>Upload your CV to get matched!</strong>' +
+          'Once you upload your CV, our NLP system will extract your skills<br>' +
+          'and show you the best matching job vacancies here.' +
+        '</div>';
+      return;
+    }
 
     if (!matches.length) {
       container.innerHTML =
         '<div class="no-matches">' +
           '<strong>No matches yet</strong>' +
-          'Upload your CV so our system can extract your skills<br>and match you with the right job vacancies.' +
+          'Your CV is being processed. Job matches will appear here shortly.' +
         '</div>';
       return;
     }
 
     container.innerHTML = matches.map(function(m) {
-      var pct = Math.round(m.score * 100);
-      var cls = pct >= 80 ? 'high' : pct >= 60 ? 'mid' : 'low';
-
       var skillTags = (m.skills || []).map(function(s) {
         return '<span class="skill-tag">' + s + '</span>';
       }).join('');
 
+      var status = m.status || 'Pending';
+      var statusBadge = '<span class="status-badge ' + status + '">' + status + '</span>';
+
       return '<div class="job-card">' +
-        '<div class="job-left">' +
-          '<h4>' + m.job_title + '</h4>' +
-          '<div class="company">' + m.company + (m.location ? ' &bull; ' + m.location : '') + '</div>' +
-          '<div class="skills">' + (skillTags || '') + '</div>' +
+        '<h4>' + (m.job_title || 'Untitled Job') + '</h4>' +
+        '<div class="job-meta">' +
+          (m.company  ? '<span><b>' + m.company + '</b></span>' : '') +
+          (m.category ? '<span>&bull; ' + m.category + '</span>' : '') +
+          statusBadge +
         '</div>' +
-        '<div class="job-right">' +
-          '<div class="score ' + cls + '">' + pct + '%</div>' +
-          '<button class="apply-btn" onclick="showToast(\'Applied to ' + m.job_title + '!\')">Apply</button>' +
-        '</div>' +
-        '</div>';
+        (skillTags ? '<div class="skills">' + skillTags + '</div>' : '') +
+        (m.posted_date ? '<div class="posted-date">Posted: ' + m.posted_date + '</div>' : '') +
+      '</div>';
     }).join('');
   }
 
-  fetch('/api/user/matches/')
-    .then(function(r) { return r.json(); })
-    .then(function(d) {
-      renderMatches(d.matches || []);
-    })
-    .catch(function() {
-      // Demo data when backend not connected
-      renderMatches([
-        { job_title: 'Python Developer',  company: 'TechCorp',     location: 'Kathmandu', score: 0.92, skills: ['Python', 'Django', 'REST API'] },
-        { job_title: 'Data Analyst',      company: 'DataWorks',    location: 'Remote',    score: 0.80, skills: ['SQL', 'Python', 'Excel'] },
-        { job_title: 'Backend Engineer',  company: 'Innovate Ltd', location: 'Lalitpur',  score: 0.65, skills: ['Django', 'PostgreSQL'] },
-        { job_title: 'ML Engineer',       company: 'AI Solutions', location: 'Remote',    score: 0.50, skills: ['Python', 'Machine Learning'] },
-      ]);
-    });
+  // ── Init ──────────────────────────────────────────────
+  checkCVStatus();
+  loadMatches();
 </script>
+
 </body>
 </html>

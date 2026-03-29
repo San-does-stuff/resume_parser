@@ -56,7 +56,7 @@
   .logout-btn:hover { background: #f0f0f0; }
 
   /* MAIN */
-  .main { padding: 28px; max-width: 960px; margin: 0 auto; }
+  .main { padding: 28px; max-width: 980px; margin: 0 auto; }
 
   .page-title {
     font-size: 20px;
@@ -82,17 +82,8 @@
     min-width: 120px;
   }
 
-  .stat .num {
-    font-size: 26px;
-    font-weight: bold;
-    color: #4a7fd4;
-  }
-
-  .stat .lbl {
-    font-size: 13px;
-    color: #888;
-    margin-top: 4px;
-  }
+  .stat .num { font-size: 26px; font-weight: bold; color: #4a7fd4; }
+  .stat .lbl { font-size: 13px; color: #888; margin-top: 4px; }
 
   /* TABLE CARD */
   .table-card {
@@ -124,7 +115,6 @@
   .search:focus { border-color: #4a7fd4; }
 
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
-
   thead tr { background: #f9fafb; }
 
   th {
@@ -146,16 +136,198 @@
   tr:last-child td { border-bottom: none; }
   tbody tr:hover td { background: #fafbfc; }
 
+  /* ACTION BUTTONS */
+  .btn-edit {
+    background: none;
+    border: 1px solid #4a7fd4;
+    color: #4a7fd4;
+    padding: 4px 12px;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    margin-right: 6px;
+  }
+  .btn-edit:hover { background: #eef3fb; }
+
+  .btn-delete {
+    background: none;
+    border: 1px solid #e05252;
+    color: #e05252;
+    padding: 4px 12px;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+  }
+  .btn-delete:hover { background: #fdf0f0; }
+
   .empty {
     text-align: center;
     padding: 40px;
     color: #aaa;
     font-size: 14px;
   }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal {
+    background: #fff;
+    border-radius: 10px;
+    padding: 28px 28px 24px;
+    width: 90%;
+    max-width: 440px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  }
+
+  .modal h3 {
+    font-size: 17px;
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .modal-field { margin-bottom: 14px; }
+
+  .modal-field label {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .modal-field input {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    color: #333;
+    outline: none;
+  }
+
+  .modal-field input:focus { border-color: #4a7fd4; }
+  .modal-field input:disabled { background: #f5f5f5; color: #aaa; }
+
+  .modal-note {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 3px;
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+  }
+
+  .btn-cancel {
+    padding: 8px 20px;
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #555;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+  }
+  .btn-cancel:hover { background: #f5f5f5; }
+
+  .btn-save {
+    padding: 8px 22px;
+    background: #4a7fd4;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #fff;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+  }
+  .btn-save:hover { background: #3a6bbf; }
+  .btn-save:disabled { background: #a0b9e8; cursor: not-allowed; }
+
+  /* ── CONFIRM MODAL ── */
+  .confirm-modal {
+    background: #fff;
+    border-radius: 10px;
+    padding: 28px;
+    width: 90%;
+    max-width: 360px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  }
+
+  .confirm-modal p {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  .confirm-modal strong { color: #222; }
+
+  .confirm-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .btn-confirm-delete {
+    padding: 8px 22px;
+    background: #e05252;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #fff;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+  }
+  .btn-confirm-delete:hover { background: #c0392b; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #333;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-size: 13px;
+    transition: transform 0.3s ease;
+    z-index: 200;
+    white-space: nowrap;
+  }
+  .toast.show  { transform: translateX(-50%) translateY(0); }
+  .toast.success { background: #27ae60; }
+  .toast.error   { background: #e05252; }
 </style>
 </head>
 <body>
 
+<!-- NAVBAR -->
 <div class="navbar">
   <div class="brand">Talent<span>Match</span></div>
   <div class="nav-right">
@@ -191,18 +363,82 @@
           <th>Email</th>
           <th>Joined</th>
           <th>Job Matches</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody id="usersBody">
-        <tr><td colspan="5" class="empty">Loading...</td></tr>
+        <tr><td colspan="6" class="empty">Loading...</td></tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<script>
-  var allUsers = [];
+<!-- ── EDIT MODAL ── -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h3>Edit User</h3>
 
+    <input type="hidden" id="editUserId">
+
+    <div class="modal-field">
+      <label>Full Name</label>
+      <input type="text" id="editName" placeholder="Full name">
+    </div>
+
+    <div class="modal-field">
+      <label>Email</label>
+      <input type="email" id="editEmail" placeholder="Email address">
+    </div>
+
+    <div class="modal-field">
+      <label>New Password</label>
+      <input type="password" id="editPassword" placeholder="Leave blank to keep current">
+      <div class="modal-note">Only fill this if you want to change the password.</div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeEdit()">Cancel</button>
+      <button class="btn-save" id="saveBtn" onclick="saveUser()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONFIRM DELETE MODAL ── -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="confirm-modal">
+    <p>Are you sure you want to delete<br><strong id="deleteUserName"></strong>?<br>This cannot be undone.</p>
+    <div class="confirm-actions">
+      <button class="btn-cancel" onclick="closeConfirm()">Cancel</button>
+      <button class="btn-confirm-delete" onclick="confirmDelete()">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  var allUsers   = [];
+  var deleteId   = null;
+  var toastTimer = null;
+
+  // ── Toast ──
+  function showToast(msg, type) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast ' + (type || 'success') + ' show';
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() { t.classList.remove('show'); }, 3000);
+  }
+
+  // ── CSRF helper ──
+  function getCookie(name) {
+    var val = '; ' + document.cookie;
+    var parts = val.split('; ' + name + '=');
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return '';
+  }
+
+  // ── Filter table ──
   function filterTable(q) {
     q = q.toLowerCase();
     var filtered = allUsers.filter(function(u) {
@@ -212,44 +448,182 @@
     renderTable(filtered);
   }
 
+  // ── Render table ──
   function renderTable(users) {
     var tbody = document.getElementById('usersBody');
     if (!users.length) {
-      tbody.innerHTML = '<tr><td colspan="5" class="empty">No users found.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" class="empty">No users found.</td></tr>';
       return;
     }
     tbody.innerHTML = users.map(function(u, i) {
-      return '<tr>' +
+      return '<tr id="row-' + u.id + '">' +
         '<td>' + (i + 1) + '</td>' +
         '<td>' + u.full_name + '</td>' +
         '<td>' + u.email + '</td>' +
         '<td>' + u.joined + '</td>' +
         '<td>' + u.match_count + '</td>' +
+        '<td>' +
+          '<button class="btn-edit" onclick="openEdit(' + JSON.stringify(u).replace(/"/g, '&quot;') + ')">Edit</button>' +
+          '<button class="btn-delete" onclick="openConfirm(' + u.id + ', \'' + u.full_name.replace(/'/g, "\\'") + '\')">Delete</button>' +
+        '</td>' +
         '</tr>';
     }).join('');
   }
 
-  fetch('/api/admin/users/')
+  // ── Load users ──
+  function loadUsers() {
+    fetch('/api/admin/users/')
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        allUsers = d.users || [];
+        document.getElementById('totalUsers').textContent = allUsers.length;
+        var total = allUsers.reduce(function(s, u) { return s + u.match_count; }, 0);
+        document.getElementById('totalMatches').textContent = total;
+        renderTable(allUsers);
+      })
+      .catch(function() {
+        allUsers = [
+          { id: 1, full_name: 'Alice Johnson', email: 'alice@email.com', joined: '2025-01-10', match_count: 5 },
+          { id: 2, full_name: 'Bob Smith',     email: 'bob@email.com',   joined: '2025-01-14', match_count: 3 },
+          { id: 3, full_name: 'Carol White',   email: 'carol@email.com', joined: '2025-01-18', match_count: 2 },
+          { id: 4, full_name: 'David Lee',     email: 'david@email.com', joined: '2025-01-20', match_count: 4 },
+        ];
+        document.getElementById('totalUsers').textContent = allUsers.length;
+        document.getElementById('totalMatches').textContent = 14;
+        renderTable(allUsers);
+      });
+  }
+
+  // ── EDIT MODAL ──
+  function openEdit(user) {
+    document.getElementById('editUserId').value   = user.id;
+    document.getElementById('editName').value     = user.full_name;
+    document.getElementById('editEmail').value    = user.email;
+    document.getElementById('editPassword').value = '';
+    document.getElementById('editModal').classList.add('show');
+  }
+
+  function closeEdit() {
+    document.getElementById('editModal').classList.remove('show');
+  }
+
+  function saveUser() {
+    var id       = document.getElementById('editUserId').value;
+    var name     = document.getElementById('editName').value.trim();
+    var email    = document.getElementById('editEmail').value.trim();
+    var password = document.getElementById('editPassword').value;
+
+    if (!name || !email) {
+      showToast('Name and email are required.', 'error');
+      return;
+    }
+
+    var btn = document.getElementById('saveBtn');
+    btn.disabled    = true;
+    btn.textContent = 'Saving...';
+
+    var payload = { id: id, full_name: name, email: email };
+    if (password) { payload.password = password; }
+
+    fetch('/api/admin/edit-user/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken')
+      },
+      body: JSON.stringify(payload)
+    })
     .then(function(r) { return r.json(); })
     .then(function(d) {
-      allUsers = d.users || [];
-      document.getElementById('totalUsers').textContent = allUsers.length;
-      var totalMatches = allUsers.reduce(function(sum, u) { return sum + u.match_count; }, 0);
-      document.getElementById('totalMatches').textContent = totalMatches;
-      renderTable(allUsers);
+      if (d.success) {
+        // Update local data
+        for (var i = 0; i < allUsers.length; i++) {
+          if (allUsers[i].id == id) {
+            allUsers[i].full_name = name;
+            allUsers[i].email     = email;
+            break;
+          }
+        }
+        renderTable(allUsers);
+        closeEdit();
+        showToast('User updated successfully.', 'success');
+      } else {
+        showToast(d.message || 'Failed to update user.', 'error');
+      }
     })
     .catch(function() {
-      // Demo data when backend not connected
-      allUsers = [
-        { full_name: 'Alice Johnson', email: 'alice@email.com', joined: '2025-01-10', match_count: 5 },
-        { full_name: 'Bob Smith',     email: 'bob@email.com',   joined: '2025-01-14', match_count: 3 },
-        { full_name: 'Carol White',   email: 'carol@email.com', joined: '2025-01-18', match_count: 2 },
-        { full_name: 'David Lee',     email: 'david@email.com', joined: '2025-01-20', match_count: 4 },
-      ];
-      document.getElementById('totalUsers').textContent = allUsers.length;
-      document.getElementById('totalMatches').textContent = 14;
+      // Demo mode — update locally
+      for (var i = 0; i < allUsers.length; i++) {
+        if (allUsers[i].id == id) {
+          allUsers[i].full_name = name;
+          allUsers[i].email     = email;
+          break;
+        }
+      }
       renderTable(allUsers);
+      closeEdit();
+      showToast('User updated. (demo mode)', 'success');
+    })
+    .finally(function() {
+      btn.disabled    = false;
+      btn.textContent = 'Save Changes';
     });
+  }
+
+  // ── DELETE MODAL ──
+  function openConfirm(id, name) {
+    deleteId = id;
+    document.getElementById('deleteUserName').textContent = name;
+    document.getElementById('confirmModal').classList.add('show');
+  }
+
+  function closeConfirm() {
+    deleteId = null;
+    document.getElementById('confirmModal').classList.remove('show');
+  }
+
+  function confirmDelete() {
+    if (!deleteId) return;
+
+    fetch('/api/admin/delete-user/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken')
+      },
+      body: JSON.stringify({ id: deleteId })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.success) {
+        allUsers = allUsers.filter(function(u) { return u.id != deleteId; });
+        renderTable(allUsers);
+        document.getElementById('totalUsers').textContent = allUsers.length;
+        closeConfirm();
+        showToast('User deleted successfully.', 'success');
+      } else {
+        showToast(d.message || 'Failed to delete user.', 'error');
+      }
+    })
+    .catch(function() {
+      // Demo mode
+      allUsers = allUsers.filter(function(u) { return u.id != deleteId; });
+      renderTable(allUsers);
+      document.getElementById('totalUsers').textContent = allUsers.length;
+      closeConfirm();
+      showToast('User deleted. (demo mode)', 'success');
+    });
+  }
+
+  // Close modals on overlay click
+  document.getElementById('editModal').addEventListener('click', function(e) {
+    if (e.target === this) closeEdit();
+  });
+  document.getElementById('confirmModal').addEventListener('click', function(e) {
+    if (e.target === this) closeConfirm();
+  });
+
+  loadUsers();
 </script>
 </body>
 </html>

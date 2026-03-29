@@ -320,9 +320,11 @@
     .then(function (res) { return res.json(); })
     .then(function (data) {
       if (data.success) {
-        showToast('Login successful!', 'success');
-        setTimeout(function () { window.location.href = '/dashboard/'; }, 1000);
-      } else {
+  showToast('Login successful!', 'success');
+  setTimeout(function () {
+    window.location.href = data.redirect || '/dashboard/';
+  }, 1000);
+} else {
         showError('lPass', 'lPassErr', data.message || 'Incorrect email or password.');
         btn.textContent = 'Login';
         btn.disabled = false;
@@ -385,11 +387,10 @@
       btn.disabled = false;
     })
     .catch(function () {
-      showToast('Registered! (demo)', 'success');
-      setTimeout(function () { showPanel('login'); }, 1400);
-      btn.textContent = 'Register';
-      btn.disabled = false;
-    });
+  showToast('Server error. Please try again.', 'error');
+  btn.textContent = 'Login';
+  btn.disabled = false;
+});
   }
 
   function getCookie(name) {
