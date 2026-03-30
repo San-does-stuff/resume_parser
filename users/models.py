@@ -2,19 +2,27 @@
 
 from django.db import models
 
-
 class UserProfile(models.Model):
-    """
-    Stores registered user info.
-    Linked to Django's built-in auth via email (used as username).
-    """
-    full_name    = models.CharField(max_length=150)
-    email        = models.EmailField(unique=True)
-    password     = models.CharField(max_length=255)   # stored as hashed value
-    created_at   = models.DateTimeField(auto_now_add=True)
+
+    ROLE_CHOICES = [
+        ('admin', 'Admin'),
+        ('user',  'User'),
+    ]
+
+    full_name  = models.CharField(max_length=150)
+    email      = models.EmailField(unique=True)
+    password   = models.CharField(max_length=255)
+    role       = models.CharField(max_length=10, choices=ROLE_CHOICES, default='user')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def is_admin(self):
+        return self.role == 'admin'
 
     def __str__(self):
-        return f"{self.full_name} ({self.email})"
+        return f"{self.full_name} ({self.role})"
+
+Users = UserProfile
 
 
 class JobVacancy(models.Model):
