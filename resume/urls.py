@@ -2,5 +2,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('',views.upload_resume,name = 'upload_resume')
+    path('api/parse-cv/', views.upload_resume, name='api_parse_cv'),
 ]
