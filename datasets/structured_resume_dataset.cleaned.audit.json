@@ -1,0 +1,311 @@
+{
+  "row_count": 3993,
+  "class_count": 16,
+  "class_imbalance_ratio": 7.6667,
+  "top_classes": [
+    [
+      "Testing",
+      322
+    ],
+    [
+      "Business Analyst",
+      311
+    ],
+    [
+      "Network Security Engineer",
+      309
+    ],
+    [
+      "Java Developer",
+      302
+    ],
+    [
+      "DotNet Developer",
+      292
+    ],
+    [
+      "Web Designing",
+      286
+    ],
+    [
+      "SAP Developer",
+      285
+    ],
+    [
+      "Data Science",
+      274
+    ],
+    [
+      "ETL Developer",
+      259
+    ],
+    [
+      "Information Technology",
+      258
+    ],
+    [
+      "SQL Developer",
+      250
+    ],
+    [
+      "DevOps",
+      248
+    ],
+    [
+      "Database",
+      238
+    ],
+    [
+      "Python Developer",
+      210
+    ],
+    [
+      "React Developer",
+      107
+    ],
+    [
+      "Blockchain",
+      42
+    ]
+  ],
+  "bottom_classes": [
+    [
+      "Blockchain",
+      42
+    ],
+    [
+      "React Developer",
+      107
+    ],
+    [
+      "Python Developer",
+      210
+    ],
+    [
+      "Database",
+      238
+    ],
+    [
+      "DevOps",
+      248
+    ],
+    [
+      "SQL Developer",
+      250
+    ],
+    [
+      "Information Technology",
+      258
+    ],
+    [
+      "ETL Developer",
+      259
+    ],
+    [
+      "Data Science",
+      274
+    ],
+    [
+      "SAP Developer",
+      285
+    ],
+    [
+      "Web Designing",
+      286
+    ],
+    [
+      "DotNet Developer",
+      292
+    ],
+    [
+      "Java Developer",
+      302
+    ],
+    [
+      "Network Security Engineer",
+      309
+    ],
+    [
+      "Business Analyst",
+      311
+    ],
+    [
+      "Testing",
+      322
+    ]
+  ],
+  "empty_skills_rows": 1155,
+  "duplicated_text_rows": 0,
+  "duplicate_group_count": 0,
+  "duplicate_groups_top": [],
+  "low_information_rows_lt_30_tokens": 0,
+  "very_long_rows_gt_1800_tokens": 0,
+  "top_skills": [
+    [
+      "sql",
+      166
+    ],
+    [
+      "javascript",
+      144
+    ],
+    [
+      "css",
+      141
+    ],
+    [
+      "html",
+      135
+    ],
+    [
+      "java",
+      108
+    ],
+    [
+      "xml",
+      104
+    ],
+    [
+      "jquery",
+      89
+    ],
+    [
+      "c++",
+      85
+    ],
+    [
+      "mysql",
+      80
+    ],
+    [
+      "ajax",
+      78
+    ],
+    [
+      "python",
+      74
+    ],
+    [
+      "pl",
+      69
+    ],
+    [
+      "oracle",
+      67
+    ],
+    [
+      "c#",
+      65
+    ],
+    [
+      "excel",
+      58
+    ],
+    [
+      "css3",
+      56
+    ],
+    [
+      "asp.net",
+      55
+    ],
+    [
+      "linux",
+      54
+    ],
+    [
+      "unix",
+      53
+    ],
+    [
+      "jira",
+      47
+    ]
+  ],
+  "top_noise_skills": [
+    [
+      "pl",
+      69
+    ],
+    [
+      "ip",
+      34
+    ],
+    [
+      "xp",
+      16
+    ],
+    [
+      "qa",
+      11
+    ],
+    [
+      "nt",
+      11
+    ],
+    [
+      "vb",
+      8
+    ],
+    [
+      "ca",
+      7
+    ],
+    [
+      "ci",
+      7
+    ],
+    [
+      "cd",
+      7
+    ],
+    [
+      "mm",
+      7
+    ],
+    [
+      "bi",
+      7
+    ],
+    [
+      "tx",
+      6
+    ],
+    [
+      "os",
+      6
+    ],
+    [
+      "fi",
+      5
+    ],
+    [
+      "pp",
+      5
+    ],
+    [
+      "ui",
+      4
+    ],
+    [
+      "co",
+      4
+    ],
+    [
+      "sd",
+      4
+    ],
+    [
+      "hr",
+      4
+    ],
+    [
+      "wm",
+      4
+    ]
+  ],
+  "data_quality_risks": [
+    "Moderate class imbalance detected (max/min ratio=7.67).",
+    "Many rows have empty skill fields (>20%), feature quality is inconsistent."
+  ]
+}

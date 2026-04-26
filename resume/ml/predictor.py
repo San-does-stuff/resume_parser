@@ -1,8 +1,45 @@
 import os
 import json
+import logging
+from pathlib import Path
 
 from .naive_bayes import NaiveBayesClassifier
 from .preprocessing import combine_feature_text
+from .train_model import train_and_save_model
+
+
+logger = logging.getLogger(__name__)
+
+
+def ensure_model_artifacts(
+    model_path: str = "media/models/naive_bayes_model.pkl",
+    metrics_path: str = "media/models/model_metrics.json",
+) -> None:
+    model_file = Path(model_path)
+    metrics_file = Path(metrics_path)
+    if model_file.exists() and metrics_file.exists():
+        return
+
+    enhanced_dataset = Path("datasets/structured_resume_dataset.enhanced.csv")
+    enhanced_cleaned = Path("datasets/structured_resume_dataset.enhanced.cleaned.csv")
+    default_dataset = Path("datasets/structured_resume_dataset.csv")
+    default_cleaned = Path("datasets/structured_resume_dataset.cleaned.csv")
+
+    dataset_path = enhanced_dataset if enhanced_dataset.exists() else default_dataset
+    cleaned_path = enhanced_cleaned if enhanced_cleaned.exists() else default_cleaned
+
+    logger.warning(
+        "Model artifacts missing. Auto-training model with dataset=%s cleaned=%s",
+        dataset_path,
+        cleaned_path,
+    )
+    train_and_save_model(
+        dataset_path=str(dataset_path),
+        cleaned_dataset_path=str(cleaned_path),
+        prefer_cleaned_dataset=True,
+        model_output_path=model_path,
+        metrics_output_path=metrics_path,
+    )
 
 
 class JobPredictor:
