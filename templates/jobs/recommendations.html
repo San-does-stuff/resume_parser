@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recommended Jobs - ResumeAI</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #f5f3ee;
+      color: #1a1814;
+      min-height: 100vh;
+    }
+    nav {
+      background: #1a1814;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 56px;
+    }
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      color: #faf9f6;
+      font-size: 1.25rem;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 0.6rem; }
+    .nav-btn {
+      color: #faf9f6;
+      text-decoration: none;
+      border-radius: 6px;
+      padding: 0.45rem 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: #2d5a3d;
+    }
+    .nav-btn.secondary {
+      background: rgba(255, 255, 255, 0.12);
+    }
+    main {
+      max-width: 1120px;
+      margin: 2rem auto;
+      padding: 0 1rem 2rem;
+    }
+    .hero {
+      background: #1a1814;
+      color: #faf9f6;
+      border-radius: 10px;
+      padding: 1.1rem 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.65rem;
+      margin-bottom: 0.2rem;
+    }
+    .hero small {
+      color: #a5a19a;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-size: 0.68rem;
+      font-weight: 600;
+    }
+    .badge {
+      background: #2d5a3d;
+      color: #fff;
+      border-radius: 999px;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    .stat {
+      background: #faf9f6;
+      border: 1px solid #ccc8be;
+      border-radius: 10px;
+      padding: 0.8rem 0.9rem;
+      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+    }
+    .stat-label {
+      color: #6b6760;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.67rem;
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+    .stat-value {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #1a1814;
+    }
+    .empty {
+      margin-top: 0.8rem;
+      background: #faf9f6;
+      border: 1px solid #ccc8be;
+      border-radius: 10px;
+      padding: 1rem;
+      color: #6b6760;
+    }
+    .grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      margin-top: 1rem;
+    }
+    .card {
+      background: #faf9f6;
+      border: 1px solid #ccc8be;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+    }
+    .card-head {
+      background: #e8e4db;
+      border-bottom: 1px solid #ccc8be;
+      padding: 0.7rem 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card h3 {
+      font-size: 1.02rem;
+      margin: 0;
+    }
+    .type-pill {
+      background: #dff0e7;
+      color: #2d5a3d;
+      border: 1px solid #bcd9c8;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .card-body { padding: 0.9rem; }
+    .small { color: #6b6760; font-size: 0.86rem; margin-bottom: 0.6rem; }
+    .line { font-size: 0.88rem; margin-bottom: 0.35rem; }
+    .line strong { color: #6b6760; font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .action {
+      margin-top: 0.8rem;
+      width: 100%;
+      border: none;
+      border-radius: 6px;
+      background: #1a1814;
+      color: #faf9f6;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.6rem 0.8rem;
+      cursor: pointer;
+    }
+    .action:hover { background: #2d5a3d; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="{% url 'home' %}" class="logo">ResumeAI</a>
+    <div class="nav-links">
+      <a href="{% url 'home' %}" class="nav-btn secondary">Home</a>
+      <a href="{% url 'logout' %}" class="nav-btn">Logout</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div>
+        <small>User Dashboard</small>
+        <h1>{{ request.user.fullname|default:request.user.username }}</h1>
+        {% if not message %}
+          <p>Predicted category: <strong>{{ predicted_category }}</strong>{% if latest_resume_date %} · Last upload: {{ latest_resume_date|date:"M d, Y H:i" }}{% endif %}</p>
+        {% endif %}
+      </div>
+      {% if not message %}
+        <div class="badge">{{ confidence_score|floatformat:2 }} confidence</div>
+      {% endif %}
+    </section>
+
+    <section class="stats-grid">
+      <div class="stat">
+        <div class="stat-label">Total Resumes</div>
+        <div class="stat-value">{{ resume_count }}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Recommendations</div>
+        <div class="stat-value">{{ recommendation_count }}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Pending</div>
+        <div class="stat-value">{{ pending_count }}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Accepted</div>
+        <div class="stat-value">{{ accepted_count }}</div>
+      </div>
+    </section>
+
+    {% if message %}
+      <p class="empty">{{ message }}</p>
+    {% endif %}
+
+    <div class="grid">
+      {% for job in jobs %}
+        <article class="card">
+          <div class="card-head">
+            <h3>{{ job.jobTitle }}</h3>
+            <span class="type-pill">{{ job.job_type }}</span>
+          </div>
+          <div class="card-body">
+            <p class="small">{{ job.company_id.companyName }} · {{ job.company_id.location }}</p>
+            <p class="line"><strong>Category</strong><br>{{ job.category.categoryName }}</p>
+            <p class="line"><strong>Required Skills</strong><br>{{ job.requiredSkill|default:"Not specified" }}</p>
+            <p class="line"><strong>Deadline</strong><br>{{ job.deadline|default:"Open" }}</p>
+            <button type="button" class="action">Apply</button>
+          </div>
+        </article>
+      {% empty %}
+        <p class="empty">No matching jobs found for the current prediction.</p>
+      {% endfor %}
+    </div>
+  </main>
+</body>
+</html>

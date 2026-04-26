@@ -6,10 +6,13 @@ class Resume(models.Model):
     rawText    = models.TextField(blank=True)
     filePath   = models.FileField(upload_to='resume_pdfs/')
     fileType   = models.CharField(max_length=10, default='pdf')
+    predicted_category = models.CharField(max_length=100, blank=True, default="")
+    confidence_score = models.FloatField(default=0.0)
     uploadDate = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.email} — {self.uploadDate}"
+        owner = self.user.email if self.user else "Guest"
+        return f"{owner} — {self.uploadDate}"
 
 class Experience(models.Model):
     resume = models.ForeignKey(

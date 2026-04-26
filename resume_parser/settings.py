@@ -134,5 +134,8 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Allow same-origin iframe embedding for in-app PDF preview.
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
 AUTH_USER_MODEL = 'users.Users'
 

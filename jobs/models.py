@@ -6,19 +6,31 @@ class JobCategory(models.Model):
 
     def __str__(self):
         return f"{self.categoryName}"
+    
+class Company(models.Model):
+    companyName = models.CharField(max_length = 255,null=True,blank=True)
+    location = models.CharField(max_length=100)
+    about = models.TextField()
+
 
 class Job(models.Model):
     category = models.ForeignKey(
         JobCategory,
         on_delete=models.CASCADE
     )
-    jobTitle = models.CharField(max_length = 255,null=True,blank=True)
-    companyName = models.CharField(max_length = 255,null=True,blank=True)
+    company_id = models.ForeignKey(
+        Company,
+        on_delete=models.CASCADE
+    )
+    jobTitle = models.CharField(max_length = 255)
+    job_type = models.CharField(max_length=15)
     requiredSkill = models.TextField(null=True,blank=True)
     postedDate = models.DateField(auto_now_add=True)
+    deadline = models.DateField(blank=True,null=True)
 
     def __str__(self):
-        return f"{self.jobTitle} at {self.companyName}"
+        company_name = self.company_id.companyName if self.company_id else "Unknown Company"
+        return f"{self.jobTitle} at {company_name}"
     
 class Recommendation(models.Model):
     users = models.ForeignKey(
