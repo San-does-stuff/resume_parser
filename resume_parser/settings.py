@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
+    # 'core',
     'resume',
     'users',
     'jobs',
@@ -84,7 +84,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME'),
-        'USERNAME' : os.getenv('DB_USERNAME'),
+        'USER' : os.getenv('DB_USERNAME'),
         'PASSWORD' : os.getenv('DB_PASSWORD'),
         'HOST' : 'localhost',
         'PORT' : os.getenv('DB_PORT'),

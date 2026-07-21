@@ -140,14 +140,22 @@
           {% endfor %}
         {% endif %}
 
-        <form method="post">
+        <form method="post" id="registerForm">
           {% csrf_token %}
+
           <input type="text" name="username" placeholder="Username" required>
           <input type="email" name="email" placeholder="Email" required>
           <input type="password" name="password" placeholder="Password" required>
           <input type="text" name="fullname" placeholder="Full name">
-          <input type="text" name="phone" placeholder="Phone">
-          <input type="text" name="location" placeholder="Location">
+          <input
+              type="tel"
+              name="phone"
+              placeholder="98XXXXXXXX"
+              maxlength="10"
+              inputmode="numeric"
+              pattern="9[0-9]{9}"
+              oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)">          
+    <input type="text" name="location" placeholder="Location">
           <button type="submit">Register</button>
         </form>
 
@@ -155,5 +163,206 @@
       </div>
     </div>
   </main>
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const form = document.getElementById("registerForm");
+
+    const username = form.username;
+    const email = form.email;
+    const password = form.password;
+    const fullname = form.fullname;
+    const phone = form.phone;
+    const location = form.location;
+
+    // Create error box if it doesn't exist
+    let errorBox = document.getElementById("formError");
+
+    if (!errorBox) {
+        errorBox = document.createElement("div");
+        errorBox.id = "formError";
+        form.parentNode.insertBefore(errorBox, form);
+    }
+
+    function showError(message) {
+        errorBox.innerHTML = `<div class="error">${message}</div>`;
+    }
+
+    function clearError() {
+        errorBox.innerHTML = "";
+    }
+
+    function invalid(input, message) {
+        input.style.borderColor = "#d33";
+        input.style.background = "#fff5f5";
+        showError(message);
+        return false;
+    }
+
+    function valid(input) {
+        input.style.borderColor = "#2d8a4b";
+        input.style.background = "#f4fff7";
+        return true;
+    }
+
+    function validateUsername() {
+        const value = username.value.trim();
+
+        if (value.length < 3)
+            return invalid(username, "Username must be at least 3 characters.");
+
+        if (value.length > 20)
+            return invalid(username, "Username cannot exceed 20 characters.");
+
+        if (!/^[A-Za-z0-9_]+$/.test(value))
+            return invalid(username, "Username can only contain letters, numbers and underscore (_).");
+
+        valid(username);
+        return true;
+    }
+
+    function validateEmail() {
+        const value = email.value.trim();
+
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!regex.test(value))
+            return invalid(email, "Enter a valid email address.");
+
+        valid(email);
+        return true;
+    }
+
+    function validatePassword() {
+        const value = password.value;
+
+        if (value.length < 8)
+            return invalid(password, "Password must be at least 8 characters.");
+
+        if (!/[A-Z]/.test(value))
+            return invalid(password, "Password must contain an uppercase letter.");
+
+        if (!/[a-z]/.test(value))
+            return invalid(password, "Password must contain a lowercase letter.");
+
+        if (!/[0-9]/.test(value))
+            return invalid(password, "Password must contain a number.");
+
+        if (!/[!@#$%^&*(),.?":{}|<>_\-+=/\\[\]]/.test(value))
+            return invalid(password, "Password should contain at least one special character.");
+
+        valid(password);
+        return true;
+    }
+
+    function validateFullname() {
+        const value = fullname.value.trim();
+
+        if (value === "") {
+            fullname.style.borderColor = "";
+            fullname.style.background = "";
+            return true;
+        }
+
+        if (value.length < 3)
+            return invalid(fullname, "Full name is too short.");
+
+        if (!/^[A-Za-z ]+$/.test(value))
+            return invalid(fullname, "Full name can only contain letters and spaces.");
+
+        valid(fullname);
+        return true;
+    }
+
+    function validatePhone() {
+        const value = phone.value.trim();
+
+        if (value === "") {
+            phone.style.borderColor = "";
+            phone.style.background = "";
+            return true;
+        }
+
+        if (!/^\+?[0-9]{7,15}$/.test(value))
+            return invalid(phone, "Phone number must contain 7-15 digits.");
+
+        valid(phone);
+        return true;
+    }
+
+    function validateLocation() {
+        const value = location.value.trim();
+
+        if (value === "") {
+            location.style.borderColor = "";
+            location.style.background = "";
+            return true;
+        }
+
+        if (value.length < 2)
+            return invalid(location, "Location is too short.");
+
+        if (value.length > 100)
+            return invalid(location, "Location is too long.");
+
+        valid(location);
+        return true;
+    }
+
+    // Real-time validation
+    username.addEventListener("input", () => {
+        clearError();
+        validateUsername();
+    });
+
+    email.addEventListener("input", () => {
+        clearError();
+        validateEmail();
+    });
+
+    password.addEventListener("input", () => {
+        clearError();
+        validatePassword();
+    });
+
+    fullname.addEventListener("input", () => {
+        clearError();
+        validateFullname();
+    });
+
+    phone.addEventListener("input", () => {
+        clearError();
+        validatePhone();
+    });
+
+    location.addEventListener("input", () => {
+        clearError();
+        validateLocation();
+    });
+
+    // Form submit
+    form.addEventListener("submit", function(e) {
+
+        clearError();
+
+        const ok =
+            validateUsername() &&
+            validateEmail() &&
+            validatePassword() &&
+            validateFullname() &&
+            validatePhone() &&
+            validateLocation();
+
+        if (!ok) {
+            e.preventDefault();
+
+            const firstInvalid = form.querySelector("input[style*='211']");
+            if (firstInvalid)
+                firstInvalid.focus();
+        }
+    });
+
+});
+</script>
 </body>
 </html>

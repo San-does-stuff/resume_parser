@@ -7,6 +7,54 @@
   <title>ResumeAI</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'home/css/home-style.css'%}">
+  <style>
+    /* Small additions to support 3 ranked predictions instead of 1.
+       Kept inline here so we don't have to touch home-style.css. */
+    .jt-predictions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+    }
+    .jt-prediction-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+    .jt-rank {
+      font-size: 0.75rem;
+      opacity: 0.6;
+      width: 1.5rem;
+    }
+    .jt-prediction-row .jt-value {
+      flex: 1;
+    }
+
+    /* Toggleable skill chips: clicking one HIGHLIGHTS it to include it in
+       the next prediction. Nothing is included by default -- only
+       skills the person actively clicks get sent to the model. */
+    .skills-chips .chip.skill-chip {
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+    .skills-chips .chip.skill-chip.chip-highlighted {
+      background-color: #f5c518;
+      color: #1a1a1a;
+    }
+    .skills-update-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .skills-update-hint {
+      font-size: 0.75rem;
+      opacity: 0.6;
+    }
+  </style>
 </head>
 <body>
 
@@ -62,6 +110,10 @@
             <span class="chip">SQL</span>
             <span class="chip">AWS</span>
           </div>
+          <div class="skills-update-row">
+            <span class="skills-update-hint">Click skills to highlight the ones you want to use, then update the prediction.</span>
+            <button class="btn-submit" id="updatePredictionBtn" disabled>Update Prediction</button>
+          </div>
         </div>
         <div class="field-row">
           <div class="field-label">Experience</div>
@@ -82,13 +134,26 @@
       </div>
     </div>
 
-    <!-- Predicted Job Title -->
+    <!-- Predicted Job Titles (top 3) -->
     <div class="job-title-panel">
-      <div>
-        <div class="jt-label">Predicted Job Title</div>
-        <div class="jt-value" id="predictedJobValue">Senior Software Engineer</div>
+      <div class="jt-label">Top Predicted Job Titles</div>
+      <div class="jt-predictions-list" id="jtPredictionsList">
+        <div class="jt-prediction-row">
+          <span class="jt-rank">#1</span>
+          <div class="jt-value" id="predictedJobValue1">Senior Software Engineer</div>
+          <div class="confidence-badge" id="confidenceBadge1">94% match</div>
+        </div>
+        <div class="jt-prediction-row">
+          <span class="jt-rank">#2</span>
+          <div class="jt-value" id="predictedJobValue2">—</div>
+          <div class="confidence-badge" id="confidenceBadge2">—</div>
+        </div>
+        <div class="jt-prediction-row">
+          <span class="jt-rank">#3</span>
+          <div class="jt-value" id="predictedJobValue3">—</div>
+          <div class="confidence-badge" id="confidenceBadge3">—</div>
+        </div>
       </div>
-      <div class="confidence-badge" id="confidenceBadge">94% match</div>
     </div>
 
     <!-- Upload Panel -->
@@ -116,6 +181,6 @@
 {% csrf_token %}
 {{ initial_resume_state|json_script:"initialResumeState" }}
 
-<script src="{% static 'home/script/home-script.js' %}?v=4"></script>
+<script src="{% static 'home/script/home-script.js' %}?v=5"></script>
 </body>
 </html>
