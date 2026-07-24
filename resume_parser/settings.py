@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
+    # 'core',
     'resume',
     'users',
     'jobs',
@@ -84,7 +84,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME'),
-        'USERNAME' : os.getenv('DB_USERNAME'),
+        'USER' : os.getenv('DB_USERNAME'),
         'PASSWORD' : os.getenv('DB_PASSWORD'),
         'HOST' : 'localhost',
         'PORT' : os.getenv('DB_PORT'),
@@ -133,6 +133,9 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Allow same-origin iframe embedding for in-app PDF preview.
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 AUTH_USER_MODEL = 'users.Users'
 

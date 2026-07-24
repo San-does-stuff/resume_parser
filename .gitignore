@@ -10,3 +10,5 @@ __pycache__/
 *.idea/
 *.pytest_cache/
 media
+*_san
+*.pub
