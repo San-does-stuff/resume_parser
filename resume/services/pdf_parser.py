@@ -279,7 +279,7 @@ def parse_resume_text(raw_text):
 
 
 def _extract_first_match(pattern, text):
-    """Return the first match of a regex pattern, or None if not found."""
+    """Return the first match of a regex pattern"""
     match = pattern.search(text)
     if match:
         return match.group(0).strip()
@@ -288,9 +288,8 @@ def _extract_first_match(pattern, text):
 
 def _extract_name(lines, email):
     """
-    Guess the person's name. We look at the first few lines of the resume
-    and pick the first one that looks like a name (2-4 words, no digits,
-    not the email, and not a word like "resume" or "CV").
+    Guess the person's name.(2-4 words, no digits,
+    not the email, and not a word like resume or CV)
     """
     for line in lines[:6]:
         word_count = len(line.split())
@@ -310,7 +309,7 @@ def _extract_name(lines, email):
 
 
 def _extract_location(lines):
-    """Look for a line that mentions an address or location keyword."""
+    """looks for a line containing an address or location keyword"""
     location_keywords = ("address", "location", "based in")
 
     for line in lines:
@@ -327,10 +326,8 @@ def _extract_location(lines):
 
 def _extract_sections(lines, lowered_lines):
     """
-    Go through the resume line by line. Whenever we see a line that looks
-    like a section title (like "Skills" or "Education"), remember that
-    we're now inside that section, and put every line after it into that
-    section's list -- until we hit the next section title.
+    Reads the resume line by line, identifies section by section headings and stores each following
+    line under the correct section untill next section is found
     """
     current_section = None
     sections = {}
@@ -361,20 +358,14 @@ def _extract_sections(lines, lowered_lines):
 
 
 def _is_section_header_line(original_line, lowered_line, header):
-    """Decide if a single line looks like a section title, e.g. 'Skills'."""
+    """Decide if a single line looks like a section title"""
     stripped = original_line.strip()
     if not stripped:
         return False
 
-    # A line that exactly matches the header, or starts with "header:",
-    # is always treated as a section title.
     if lowered_line == header or lowered_line.startswith(header + ":"):
         return True
 
-    # A line like "Skills " (header plus more words) is only treated as a
-    # section title if it's short, or written in all caps -- otherwise it
-    # is probably just a normal sentence that happens to start with the
-    # same word.
     if lowered_line.startswith(header + " "):
         word_count = len(stripped.split())
         if word_count <= 4:
@@ -387,10 +378,8 @@ def _is_section_header_line(original_line, lowered_line, header):
 
 def _extract_skills(skill_lines, raw_text):
     """
-    Look for any of our known skill words/phrases in the resume text.
-    We search inside the "Skills" section first (if we found one), and
-    also across the whole resume, since skills sometimes get mentioned
-    in the profile or project sections too.
+    Searches the resume for known skills by checking the Skills section first and 
+    then the rest of the resume to find any skills mentioned anywhere
     """
     if skill_lines:
         skill_text = " ".join(skill_lines) + " " + raw_text
@@ -420,9 +409,9 @@ def _extract_skills(skill_lines, raw_text):
             found.append(skill)
             seen.add(skill)
 
-    # If we found a "Skills" section but none of the words in it matched
-    # our known list, just split that section on commas/bullets instead,
-    # so we still return something useful.
+
+    # If no known skills are found, it splits the Skills section into individual items
+    # so that useful skills can still be extracted
     if skill_lines and not found:
         inferred = []
         for line in skill_lines:
@@ -437,7 +426,7 @@ def _extract_skills(skill_lines, raw_text):
 
 
 def _extract_education(education_lines, all_lines):
-    """Pull out lines that look like education entries (degree, school, etc.)."""
+    """Pull out lines that look like education entries (degree, school, etc.)"""
     source = education_lines if education_lines else all_lines
 
     entries = []
@@ -494,7 +483,7 @@ def _extract_experience(experience_lines, all_lines):
 
         has_hint = False
         for hint in EXPERIENCE_TITLE_HINTS:
-            if hint in lower:
+            if re.search(r"\b" + re.escape(hint) + r"\b", lower):
                 has_hint = True
 
         if not has_hint:
@@ -517,8 +506,6 @@ def _extract_experience(experience_lines, all_lines):
             "description": None,
         })
 
-    # If nothing matched above, fall back to using any non-empty line from
-    # the experience section that isn't just a date range.
     if not entries and experience_lines:
         for line in experience_lines:
             normalized = re.sub(r"\s{2,}", " ", line).strip(" ,;|-")
@@ -547,7 +534,8 @@ def _extract_experience(experience_lines, all_lines):
 
 
 def _extract_bulleted_items(lines):
-    """Strip bullet points/numbers off the front of each line."""
+    """Removes bullet points and numbering from the beginning of each line 
+       to make the text clean and easy to process"""
     cleaned = []
     for line in lines:
         item = re.sub(r"^[•\-\*\d\.\)\s]+", "", line).strip()
@@ -558,13 +546,8 @@ def _extract_bulleted_items(lines):
 
 def looks_like_resume(parsed_data, raw_text):
     """
-    Decide whether the uploaded PDF actually looks like a resume, before we
-    bother running it through the job-category model. A random PDF (an
-    invoice, an article, a book chapter, etc.) usually won't have any of
-    the things a real resume almost always has: an email/phone number, a
-    skills list, an education entry, or a work experience entry.
-
-    Returns True if it looks like a resume, False otherwise.
+    Checks whether the uploaded PDF looks like a resume by looking for common resume details
+    such as contact information, skills, education, or work experience before processing it further
     """
     if not raw_text or len(raw_text.strip()) < 50:
         return False

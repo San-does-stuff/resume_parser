@@ -202,19 +202,52 @@
       border-radius: 6px;
       padding: 0.45rem 0.55rem;
     }
+    .deadline-passed {
+      color: #a3372e;
+      font-weight: 700;
+    }
+
+    /* --- Apply button --- */
     .action {
       margin-top: 0.8rem;
       width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       background: #1a1814;
       color: #faf9f6;
-      font-size: 0.82rem;
-      font-weight: 600;
-      padding: 0.6rem 0.8rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 0.65rem 0.8rem;
       cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
     }
-    .action:hover { background: #2d5a3d; }
+    .action:hover {
+      background: #2d5a3d;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.16);
+    }
+    .action:active {
+      transform: translateY(1px);
+    }
+    /* Disabled state: expired job deadline. Applies whether the element
+       is a <button disabled> or a <span> standing in for a link. */
+    .action.expired,
+    .action:disabled {
+      background: #d8d4ca;
+      color: #8a857a;
+      cursor: not-allowed;
+      box-shadow: none;
+      pointer-events: none;
+    }
+    .action.expired:hover,
+    .action:disabled:hover {
+      background: #d8d4ca;
+    }
   </style>
 </head>
 <body>
@@ -235,9 +268,6 @@
           <p>Predicted category: <strong>{{ predicted_category }}</strong>{% if latest_resume_date %} · Last upload: {{ latest_resume_date|date:"M d, Y H:i" }}{% endif %}</p>
         {% endif %}
       </div>
-      {% if not message %}
-        <div class="badge">{{ confidence_score|floatformat:2 }} confidence</div>
-      {% endif %}
     </section>
 
     <section class="stats-grid">
@@ -288,16 +318,27 @@
               <p class="small">{{ job.company_id.companyName }} · {{ job.company_id.location }}</p>
               <p class="line"><strong>Category</strong><br>{{ job.category.categoryName }}</p>
               <p class="line"><strong>Required Skills</strong><br>{{ job.requiredSkill|default:"Not specified" }}</p>
-              <p class="line"><strong>Deadline</strong><br>{{ job.deadline|default:"Open" }}</p>
-              <div class="why">
+              <p class="line">
+                <strong>Deadline</strong><br>
+                {% if job.is_expired %}
+                  <span class="deadline-passed">{{ job.deadline|default:"Open" }} (Passed)</span>
+                {% else %}
+                  {{ job.deadline|default:"Open" }}
+                {% endif %}
+              </p>
+              <!-- <div class="why">
                 <strong>Why recommended:</strong>
                 {% for reason in job.match_reasons %}
                   {{ reason }}{% if not forloop.last %} | {% endif %}
                 {% empty %}
                   Matched by role similarity.
                 {% endfor %}
-              </div>
-              <button type="button" class="action">Apply</button>
+              </div> -->
+              {% if job.is_expired %}
+                <button type="button" class="action expired" disabled title="This job's deadline has passed">Deadline Passed</button>
+              {% else %}
+                <a href="{{ job.source_url }}" class="action" target="_blank" rel="noopener noreferrer">Apply</a>
+              {% endif %}
             </div>
           </article>
         {% empty %}
@@ -319,8 +360,19 @@
               <p class="small">{{ job.company_id.companyName }} · {{ job.company_id.location }}</p>
               <p class="line"><strong>Category</strong><br>{{ job.category.categoryName }}</p>
               <p class="line"><strong>Required Skills</strong><br>{{ job.requiredSkill|default:"Not specified" }}</p>
-              <p class="line"><strong>Deadline</strong><br>{{ job.deadline|default:"Open" }}</p>
-              <button type="button" class="action">Apply</button>
+              <p class="line">
+                <strong>Deadline</strong><br>
+                {% if job.is_expired %}
+                  <span class="deadline-passed">{{ job.deadline|default:"Open" }} (Passed)</span>
+                {% else %}
+                  {{ job.deadline|default:"Open" }}
+                {% endif %}
+              </p>
+              {% if job.is_expired %}
+                <button type="button" class="action expired" disabled title="This job's deadline has passed">Deadline Passed</button>
+              {% else %}
+                <a href="{{ job.source_url }}" class="action" target="_blank" rel="noopener noreferrer">Apply</a>
+              {% endif %}
             </div>
           </article>
         {% empty %}

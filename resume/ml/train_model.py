@@ -6,7 +6,7 @@ from .naive_bayes import NaiveBayesClassifier
 from .preprocessing import combine_feature_text
 
 # Configuration
-DATASET_PATH = "datasets/Ndataset.csv"
+DATASET_PATH = "datasets/Ndataset_1.csv"
 MODEL_PATH = "media/models/naive_bayes_model.pkl"
 
 TRAIN_RATIO = 0.8
