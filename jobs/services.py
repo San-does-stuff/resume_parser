@@ -1,5 +1,6 @@
 import hashlib
 import json
+import re
 import subprocess
 import sys
 from datetime import date
@@ -10,6 +11,7 @@ from django.db.models import Q
 from django.utils.dateparse import parse_date
 
 from .models import Company, Job, JobCategory
+from .category_matcher import match_category
 
 
 SCRAPING_DIR = Path(__file__).resolve().parent / "scraping_scripts"
@@ -18,6 +20,17 @@ SCRAPER_OUTPUTS = {
     "cedar_json.py": ("cedar", "cedar_extracted_jobs.json"),
     "proshore_json.py": ("proshore", "proshore_jobs.json"),
     "verisk_json.py": ("verisk", "verisk_extracted_jobs.json"),
+}
+
+# Common words that show up in almost every tech job title/description
+# and therefore shouldn't count as a meaningful signal on their own (e.g.
+# "developer" or "engineer" appearing ANYWHERE shouldn't be enough to call
+# something a match -- nearly every listing on a tech job board has one
+# of these words somewhere).
+GENERIC_TITLE_WORDS = {
+    "developer", "engineer", "engineering", "specialist", "officer",
+    "executive", "analyst", "associate", "senior", "junior", "lead",
+    "manager", "assistant", "consultant", "intern", "coordinator",
 }
 
 
@@ -125,24 +138,101 @@ def upsert_job(*, source: str, raw: dict) -> str | None:
     return None
 
 
+def _tokenize(text: str) -> set[str]:
+    """Turn text into a set of lowercase, meaningful words (3+ letters)."""
+    if not text:
+        return set()
+    words = re.findall(r"[a-z0-9]+", text.lower())
+    return {word for word in words if len(word) > 2}
+
+
+def _score_job_match(job: Job, predicted_lower: str, predicted_tokens: set[str]) -> float:
+    """
+    Score how well a job matches the predicted job category, from 0 up.
+    Higher = stronger match. This replaces "does any single word appear
+    anywhere" with "how much do these two things actually have in
+    common", so a job doesn't get recommended just because it contains
+    one very common word like 'developer' or 'engineer'.
+    """
+    job_title = (job.jobTitle or "").lower()
+    category = (job.category.categoryName or "").lower() if job.category else ""
+    skills = (job.requiredSkill or "").lower()
+    description = (job.description or "").lower()
+
+    score = 0.0
+
+    # Category match is the strongest possible signal -- it means our
+    # category-matching step already decided this job belongs to
+    # (roughly) the same role as the resume's predicted category.
+    if predicted_lower and category:
+        if predicted_lower == category:
+            score += 5.0
+        elif predicted_lower in category or category in predicted_lower:
+            score += 3.0
+
+    # The full predicted phrase appearing in the job title is also a
+    # strong, specific signal (e.g. "full stack developer" appearing as
+    # a whole phrase, not just the word "developer" on its own).
+    if predicted_lower and predicted_lower in job_title:
+        score += 4.0
+
+    # Beyond that, count MEANINGFUL shared words, but don't give credit
+    # for generic words every tech job has anyway.
+    job_title_tokens = _tokenize(job_title) - GENERIC_TITLE_WORDS
+    meaningful_predicted_tokens = predicted_tokens - GENERIC_TITLE_WORDS
+
+    shared_title_words = meaningful_predicted_tokens & job_title_tokens
+    score += len(shared_title_words) * 1.5
+
+    skills_tokens = _tokenize(skills)
+    shared_skill_words = meaningful_predicted_tokens & skills_tokens
+    score += len(shared_skill_words) * 0.75
+
+    description_tokens = _tokenize(description)
+    shared_description_words = meaningful_predicted_tokens & description_tokens
+    score += len(shared_description_words) * 0.25
+
+    return score
+
+
+# A job needs at least this much score to be considered a real
+# recommendation, not just an incidental word overlap somewhere.
+MIN_MATCH_SCORE = 3.0
+
+# Don't return an unbounded number of "recommended" jobs.
+MAX_RECOMMENDATIONS = 30
+
+
 def get_recommended_jobs_for_prediction(predicted_title: str):
     if not predicted_title:
         return Job.objects.none()
 
-    base_query = (
-        Q(jobTitle__icontains=predicted_title)
-        | Q(category__categoryName__iexact=predicted_title)
-        | Q(category__categoryName__icontains=predicted_title)
-    )
-    tokens = [token.strip() for token in predicted_title.lower().split() if len(token.strip()) > 2]
-    token_query = Q()
-    for token in tokens:
-        token_query |= Q(jobTitle__icontains=token)
-        token_query |= Q(category__categoryName__icontains=token)
-        token_query |= Q(requiredSkill__icontains=token)
-        token_query |= Q(description__icontains=token)
+    predicted_lower = predicted_title.strip().lower()
+    predicted_tokens = _tokenize(predicted_lower)
 
-    return Job.objects.select_related("company_id", "category").filter(base_query | token_query).distinct()
+    # Cast a reasonably wide net at the database level first (this can
+    # still include weak/irrelevant matches -- that's fine, we score and
+    # filter properly in Python next).
+    base_query = (
+        Q(jobTitle__icontains=predicted_lower)
+        | Q(category__categoryName__iexact=predicted_lower)
+        | Q(category__categoryName__icontains=predicted_lower)
+    )
+    for token in predicted_tokens:
+        base_query |= Q(jobTitle__icontains=token)
+        base_query |= Q(category__categoryName__icontains=token)
+
+    candidates = Job.objects.select_related("company_id", "category").filter(base_query).distinct()
+
+    scored_jobs = []
+    for job in candidates:
+        score = _score_job_match(job, predicted_lower, predicted_tokens)
+        if score >= MIN_MATCH_SCORE:
+            scored_jobs.append((score, job))
+
+    scored_jobs.sort(key=lambda pair: pair[0], reverse=True)
+
+    return [job for _score, job in scored_jobs[:MAX_RECOMMENDATIONS]]
 
 
 def build_match_reasons(job: Job, predicted_title: str) -> list[str]:
@@ -168,7 +258,15 @@ def build_match_reasons(job: Job, predicted_title: str) -> list[str]:
         reasons.append("Job description aligns with your predicted role.")
 
     if not reasons:
-        reasons.append("Matched using fuzzy title/category similarity.")
+        predicted_tokens = _tokenize(predicted) - GENERIC_TITLE_WORDS
+        job_title_tokens = _tokenize(job_title) - GENERIC_TITLE_WORDS
+        shared_words = predicted_tokens & job_title_tokens
+        if shared_words:
+            words_list = ", ".join(sorted(shared_words))
+            reasons.append(f"Shares key words with your predicted role: {words_list}.")
+        else:
+            reasons.append("Matched using overall similarity to your predicted role.")
+
     return reasons
 
 
@@ -222,24 +320,11 @@ def normalize_job_payload(source: str, raw: dict) -> dict:
         "required_skills": str(skills).strip(),
         "description": f"{description}\n{responsibilities}".strip(),
         "deadline": parse_possible_date(raw.get("deadline") or raw.get("posted_date")),
-        "category": str(category).strip() or infer_category_from_title(title),
+        "category": str(category).strip() or match_category(title),
         "source_url": source_url,
         "source_job_id": source_job_id,
         "content_hash": content_hash,
     }
-
-
-def infer_category_from_title(job_title: str) -> str:
-    title = job_title.lower()
-    if "data" in title:
-        return "Data"
-    if "engineer" in title or "developer" in title:
-        return "Software Engineer"
-    if "design" in title:
-        return "Designer"
-    if "manager" in title:
-        return "Management"
-    return "General"
 
 
 def parse_possible_date(value) -> date | None:

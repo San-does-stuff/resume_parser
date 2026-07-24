@@ -25,6 +25,7 @@ class Job(models.Model):
     jobTitle = models.CharField(max_length = 255)
     job_type = models.CharField(max_length=15)
     requiredSkill = models.TextField(null=True,blank=True)
+    salary = models.FloatField(null=True, blank=True, default=0.0)
     postedDate = models.DateField(auto_now_add=True)
     deadline = models.DateField(blank=True,null=True)
     source = models.CharField(max_length=50, blank=True, default="")
